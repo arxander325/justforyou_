@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Surprise</title>
+    <style>
+        body {
+            background: black;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+            cursor: none;
+        }
+        .screen {
+            font-size: 1.2em;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .visible {
+            opacity: 1;
+        }
+        .typing {
+            border-right: .15em solid #00ff00;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00ff00; }
+        }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                opacity: 0.99;
+            }
+            20%, 24%, 55% {
+                opacity: 0.4;
+            }
+        }
+        .code {
+            opacity: 0.1;
+            animation: scroll 10s linear infinite, flicker 2s infinite alternate;
+        }
+        @keyframes scroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
+        }
+        #code-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: rgba(0, 255, 0, 0.2);
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .code-line {
+            font-size: 0.8em;
+            white-space: nowrap;
+            animation: flicker 2s infinite alternate;
+        }
+    </style>
+</head>
+<body>
+    <div id="code-container"></div>
+    <div id="screen1" class="screen"><span class="typing">Accessing secure server...</span></div>
+    <div id="screen2" class="screen"><span class="typing">Decrypting data...</span></div>
+    <div id="screen3" class="screen"><span class="typing">System Compromised.</span></div>
+    <div id="screen4" class="screen"><span class="typing">Initiating lockdown...</span></div>
+    <div id="screen5" class="screen"><span class="typing">Encryption keys extracted...</span></div>
+    <div id="screen6" class="screen"><span class="typing">Error: Unauthorized access detected!</span></div>
+    <div id="screen7" class="screen"><span class="typing">Hey Dude!:<br><br>I write this to you. Maybe we will need your help for our big project next year. Thanks from us!.<br><br>- arxan</span></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const messages = ["screen1", "screen2", "screen3", "screen4", "screen5", "screen6", "screen7"];
+            let currentMessage = 0;
+            const messageDelay = 4000; // Time in milliseconds before switching to the next message
+
+            function showNextMessage() {
+                if (currentMessage < messages.length) {
+                    document.getElementById(messages[currentMessage]).classList.add('visible');
+                    setTimeout(() => {
+                        document.getElementById(messages[currentMessage]).classList.remove('visible');
+                        currentMessage++;
+                        showNextMessage();
+                    }, messageDelay);
+                }
+            }
+
+            showNextMessage();
+
+            // Generate and animate code lines
+            const codeContainer = document.getElementById('code-container');
+            const codeLines = [
+                "0x4A3B8F | Auth successful...",
+                "0x3A7E2D | System scan in progress...",
+                "0x1B4C3A | Data transmission initiated...",
+                "0x4F2A7D | Firewall breach detected...",
+                "0x3D5C2F | Encrypted message generated...",
+                "0x4A7E3C | Payload delivery in progress...",
+                "0x1A2F3B | Finalizing sequence...",
+            ];
+
+            for (let i = 0; i < 100; i++) {
+                const codeLine = document.createElement('div');
+                codeLine.className = 'code-line code';
+                codeLine.style.top = `${Math.random() * 100}%`;
+                codeLine.style.left = `${Math.random() * 100}%`;
+                codeLine.textContent = codeLines[Math.floor(Math.random() * codeLines.length)];
+                codeContainer.appendChild(codeLine);
+            }
+
+            // Disable interactions to simulate "control" over the screen
+            window.oncontextmenu = function() { return false; };
+            window.onkeydown = function(e) {
+                e.preventDefault();
+            };
+            window.onbeforeunload = function() {
+                return "You cannot leave this page.";
+            };
+
+            history.pushState(null, null, location.href);
+            window.onpopstate = function() {
+                history.pushState(null, null, location.href);
+            };
+        });
+    </script>
+</body>
+</html>
